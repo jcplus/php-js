@@ -1,53 +1,124 @@
-function AidUtil () {}
-
+/**
+ * Returns a string formatted according to the given format string using
+ * the given integer timestamp or the current time if no timestamp is given.
+ *
+ * @param   {string}  format
+ * @param   {number} timestamp
+ * @returns {string}
+ */
 function date (format, timestamp) {
-	var week_names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-		week_full_names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-		month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-		month_full_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-		obj = timestamp ? new Date(timestamp) : new Date(),
+	if (gettype(new Date(timestamp)) !== 'date') throw 'Invalid timestamp';
+	if (gettype(format) !== 'string') format = 'Y-m-d H:i:s';
+	var obj = timestamp ? new Date(timestamp) : new Date(),
 		last_day = new Date(obj.getFullYear(), obj.getMonth() + 1, -1),
-		suffix = 'th';
+		hours = obj.getHours(),
+		small_hours = hours > 12 ? 24 - hours : hours,
+		suffix = 'th',
+		result = '';
 	if (obj.getDate() === 1) suffix = 'st';
 	if (obj.getDate() === 2) suffix = 'nd';
 	if (obj.getDate() === 3) suffix = 'rd';
-	if (gettype(obj) === 'date_invalid') throw 'Error: invalid timestamp';
-	if (gettype(format) !== 'string') format = 'Y-m-d H:i:s';
-	format = format.replace(/Y/g, obj.getFullYear()) // A full numeric representation of a year, 4 digits
-		.replace(/y/g, obj.getFullYear().toString().slice(2)) // A two digit representation of a year
-		.replace(/L/g, is_leap_year(obj.getFullYear()) ? '1' : '0') // Whether it's a leap year
-
-		.replace(/F/g, month_full_names[obj.getMonth()]) // A full textual representation of a month, such as January or March
-		.replace(/M/g, month_names[obj.getMonth()]) // A short textual representation of a month, three letters
-		.replace(/m/g, obj.getMonth() + 1 > 9 ? obj.getMonth() + 1 : '0' + (obj.getMonth() + 1)) // Numeric representation of a month, with leading zeros
-		.replace(/n/g, (obj.getMonth() + 1).toString()) // Numeric representation of a month, without leading zeros
-		.replace(/t/g, last_day.getDate().toString()) // Number of days in the given month
-
-		.replace(/d/g, obj.getDate() > 9 ? obj.getDate() : '0' + obj.getDate()) // Day of the month, 2 digits with leading zeros
-		.replace(/D/g, week_names[obj.getDay()]) // A textual representation of a day, three letters
-		.replace(/j/g, (obj.getDate() + 1).toString()) // Day of the month without leading zeros
-		.replace(/l/g, week_full_names[obj.getDay()]) // A full textual representation of the day of the week (lowercase 'L')
-		.replace(/N/g, obj.getDay() === 0 ? '7' : obj.getDay()) // ISO-8601 numeric representation of the day of the week
-		.replace(/s/g, suffix) // English ordinal suffix for the day of the month, 2 characters
-		.replace(/w/g, obj.getDay().toString()) // Numeric representation of the day of the week
-		.replace(/z/g, day_of_year(obj).toString()) // The day of the year (starting from 0)
-
-		.replace(/W/g, week_number(obj).toString()) // ISO-8601 week number of year, weeks starting on Monday
-
-		.replace(/H/g, obj.getHours() > 9 ? obj.getHours() : '0' + obj.getHours())
-		.replace(/i/g, obj.getMinutes() > 9 ? obj.getMinutes() : '0' + obj.getMinutes())
-		.replace(/s/g, obj.getSeconds() > 9 ? obj.getSeconds() : '0' + obj.getSeconds())
-		;
-	return format;
+	format.split().forEach(function (char) {
+		switch (char) {
+			case 'Y': // A full numeric representation of a year, 4 digits
+				result += char.replace('Y', obj.getFullYear().toString());
+				break;
+			case 'y': // A two digit representation of a year
+				result += char.replace('y', obj.getFullYear().toString().slice(2));
+				break;
+			case 'L': // Whether it's a leap year
+				result += char.replace('L', is_leap_year(obj.getFullYear()) ? '1' : '0');
+				break;
+			case 'F': // A full textual representation of a month, such as January or March
+				result += month_name(obj.getMonth());
+				break;
+			case 'M': // A short textual representation of a month, three letters
+				result += month_name(obj.getMonth(), true);
+				break;
+			case 'm': // Numeric representation of a month, with leading zeros
+				result += obj.getMonth() + 1 > 9 ? obj.getMonth() + 1 : '0' + (obj.getMonth() + 1);
+				break;
+			case 'n': // Numeric representation of a month, without leading zeros
+				result += obj.getMonth() + 1;
+				break;
+			case 't': // Number of days in the given month
+				result += last_day.getDate();
+				break;
+			case 'd': // Day of the month, 2 digits with leading zeros
+				result += obj.getDate() > 9 ? obj.getDate() : '0' + obj.getDate();
+				break;
+			case 'D': // A textual representation of a day, three letters
+				result += week_name(obj.getDay(), true);
+				break;
+			case 'j': // Day of the month without leading zeros
+				result += obj.getDate();
+				break;
+			case 'l': // A full textual representation of the day of the week (lowercase 'L')
+				result += week_name(obj.getDay());
+				break;
+			case 'N': // ISO-8601 numeric representation of the day of the week
+				result += obj.getDay() === 0 ? '7' : obj.getDay();
+				break;
+			case 'S': // English ordinal suffix for the day of the month, 2 characters
+				result += suffix;
+				break;
+			case 'w': // Numeric representation of the day of the week
+				result += obj.getDay();
+				break;
+			case 'z': // The day of the year (starting from 0)
+				result += day_of_year(obj);
+				break;
+			case 'W': // ISO-8601 week number of year, weeks starting on Monday
+				result += week_number(obj);
+				break;
+			case 'H': // 24-hour format of an hour with leading zeros
+				result += hours > 9 ? hours : '0' + hours;
+				break;
+			case 'G': // 24-hour format of an hour without leading zeros
+				result += hours;
+				break;
+			case 'h': // 12-hour format of an hour with leading zeros
+				result += small_hours > 9 ? small_hours : '0' + small_hours;
+				break;
+			case 'g': // 12-hour format of an hour without leading zeros
+				result += small_hours;
+				break;
+			case 'i': // Minutes with leading zeros
+				result += obj.getMinutes() > 9 ? obj.getMinutes() : '0' + obj.getMinutes();
+				break;
+			case 's': // Seconds with leading zeros
+				result += obj.getSeconds() > 9 ? obj.getSeconds() : '0' + obj.getSeconds();
+				break;
+			case 'v': // Milliseconds
+				result += new Date().toISOString().split('.')[1].replace('Z', '');
+				break;
+			case 'U': // Seconds since the Unix Epoch (January 1 1970 00:00:00 GMT)
+				result += obj.getTime();
+				break;
+		}
+	});
+	return result;
 }
 
-function day_of_year (now) {
-	if (gettype(now) !== 'date') throw 'day_of_year requires now to be a valid Date object';
-	var start = new Date(now.getFullYear(), 0, 0),
-		diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+/**
+ * The day of the year (starting from 0)
+ *
+ * @param   {date}   obj
+ * @returns {number}
+ */
+function day_of_year (obj) {
+	if (gettype(obj) !== 'date') throw 'day_of_year requires now to be a valid Date object';
+	var start = new Date(obj.getFullYear(), 0, 0),
+		diff = (obj - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
 	return Math.floor(diff / 1000 * 60 * 60 * 24);
 }
 
+/**
+ * Determine whether a variable is empty
+ *
+ * @param   {any}     param
+ * @returns {boolean}
+ */
 function empty (param) {
 	switch (gettype(param)) {
 		case 'array':
@@ -63,6 +134,12 @@ function empty (param) {
 	}
 }
 
+/**
+ * Get the type of a variable
+ *
+ * @param   {any} param
+ * @returns {string}
+ */
 function gettype (param) {
 	switch (typeof param) {
 		case 'number':
@@ -90,6 +167,12 @@ function gettype (param) {
 	}
 }
 
+/**
+ * Finds whether a variable is an array
+ *
+ * @param   {any}     param
+ * @returns {boolean}
+ */
 function is_array (param) {
 	return typeof param === 'object' && param.constructor === Array;
 }
@@ -114,10 +197,49 @@ function is_null (param) {
 	return typeof param === 'object' && param === null;
 }
 
+/**
+ * Find whether the type of a variable is string
+ *
+ * @param   {any}     param
+ * @returns {boolean}
+ */
 function is_string (param) {
 	return typeof param === 'string';
 }
 
+/**
+ * Get the month name
+ *
+ * @param   {number}  n
+ * @param   {boolean} short
+ * @returns {string}
+ */
+function month_name (n, short) {
+	if (gettype(n) !== 'integer' || n > 11 || n < 0) throw 'Invalid month number';
+	var names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+			'September', 'October', 'November', 'December'];
+	return short ? names[n].substr(0, 3) : names[n];
+}
+
+/**
+ * Get the week day name
+ *
+ * @param   {number}  n
+ * @param   {boolean} short
+ * @returns {string}
+ */
+function week_name (n, short) {
+	if (gettype(n) !== 'integer' || n > 6 || n < 0) throw 'Invalid week number';
+	var names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+	return short ? names[n].substr(0, 3) : names[n];
+}
+
+/**
+ * Get the week number of a given date object
+ *
+ * @param   {date}   obj
+ * @returns {number}
+ */
 function week_number (obj) {
 	if (gettype(obj) !== 'date') throw 'week_number requires 1 parameter and it must be a valid Date object';
 	var week_number, year_start;
