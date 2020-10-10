@@ -1,2 +1,2 @@
-# aid-selector
-JS plugin that converts select element
+# PHP-JS
+A JavaScript library that enables some PHP function for browsers.
