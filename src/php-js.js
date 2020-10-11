@@ -258,7 +258,7 @@ function sprintf () {
 
     format = format.replace(/%s/g, function(match) {
         i ++;
-        return typeof args[i] !== 'undefined' : args[i] : match;
+        return typeof args[i] !== 'undefined' ? args[i] : match;
     });
 	return format;
 }
