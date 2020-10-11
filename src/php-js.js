@@ -251,25 +251,16 @@ function month_name (n, short) {
  */
 function sprintf () {
 	if (arguments.length < 1) throw 'sprintf requires the first parameter to be a string';
-	var format = arguments[0],
-		matches,
-		regex = /%b|%c|%d|%e|%E|%f|%F|%g|%G|%o|%s|%u|%x|%X/g,
-		result = '';
+	var args = arguments, format = args[0], i = 0, result = '';
 
-	while ((matches = regex.exec(format)) !== null) {
-		// This is necessary to avoid infinite loops with zero-width matches
-		if (matches.index === regex.lastIndex) regex.lastIndex ++;
+    // No replacements given
+    if (arguments.length === 1) return format;
 
-		// The result can be accessed through the `m`-variable.
-		matches.forEach((match, group_index) => {
-			console.log(`Found match, group ${group_index}: ${match}`);
-		});
-	}
-	console.log(matches);
-	// for (var i = 1; i < arguments.length; i ++) {
-	// 	var arg = arguments[1];
-	// }
-	return result;
+    format = format.replace(/%s/g, function(match) {
+        i ++;
+        return typeof args[i] !== 'undefined' : args[i] : match;
+    });
+	return format;
 }
 
 /**
