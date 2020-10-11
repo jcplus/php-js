@@ -168,6 +168,28 @@ function gettype (param) {
 }
 
 /**
+ * Checks if a value exists in an array
+ *
+ * @param {any}       needle   // The searched value.
+ * @param {array}     haystack // The array.
+ * @param {boolean}   strict   // If the third parameter strict is set to TRUE then the in_array() function will also check the types of the needle in the haystack.
+ * @returns {boolean}
+ */
+function in_array (needle, haystack, strict) {
+	if (gettype(haystack) !== 'array') throw 'in_array requires haystack to be an array';
+	if (empty(haystack)) return false;
+	var result = false;
+	haystack.forEach(function (each) {
+		if (gettype(strict) && strict === true) {
+			if (each == needle) result = true;
+		} else {
+			if (each === needle && gettype(each) === gettype(needle)) result = true;
+		}
+	});
+	return result;
+}
+
+/**
  * Finds whether a variable is an array
  *
  * @param   {any}     param
@@ -219,6 +241,35 @@ function month_name (n, short) {
 	var names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
 			'September', 'October', 'November', 'December'];
 	return short ? names[n].substr(0, 3) : names[n];
+}
+
+/**
+ * Return a formatted string
+ *
+ * @param   {string} format
+ * @returns {string}
+ */
+function sprintf () {
+	if (arguments.length < 1) throw 'sprintf requires the first parameter to be a string';
+	var format = arguments[0],
+		matches,
+		regex = /%b|%c|%d|%e|%E|%f|%F|%g|%G|%o|%s|%u|%x|%X/g,
+		result = '';
+
+	while ((matches = regex.exec(format)) !== null) {
+		// This is necessary to avoid infinite loops with zero-width matches
+		if (matches.index === regex.lastIndex) regex.lastIndex ++;
+
+		// The result can be accessed through the `m`-variable.
+		matches.forEach((match, group_index) => {
+			console.log(`Found match, group ${group_index}: ${match}`);
+		});
+	}
+	console.log(matches);
+	// for (var i = 1; i < arguments.length; i ++) {
+	// 	var arg = arguments[1];
+	// }
+	return result;
 }
 
 /**
