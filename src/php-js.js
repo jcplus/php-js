@@ -1,4 +1,34 @@
 /**
+ * Return all the keys or a subset of the keys of an object
+ *
+ * @param  {object} obj
+ * @return {array}
+ */
+function json_keys (obj) {
+    if (gettype(obj) !== 'object') throw 'json_keys requires an object';
+    var keys = [];
+    for (var key in obj) {
+        keys.push(key);
+    }
+    return keys;
+}
+
+/**
+ * Return all the values of an array
+ *
+ * @param  {object} obj
+ * @return {array}
+ */
+function json_values (obj) {
+    if (gettype(obj) !== 'object') throw 'json_values requires an object';
+    var values = [];
+    for (var key in obj) {
+        values.push(obj[key]);
+    }
+    return values;
+}
+
+/**
  * Returns a string formatted according to the given format string using
  * the given integer timestamp or the current time if no timestamp is given.
  *
@@ -199,24 +229,65 @@ function is_array (param) {
 	return typeof param === 'object' && param.constructor === Array;
 }
 
-function is_boolean (param) {
+/**
+ * Finds out whether a variable is a boolean
+ *
+ * @param  {any}     param
+ * @return {Boolean}       [description]
+ */
+function is_bool (param) {
 	return typeof param === 'boolean';
 }
 
+/**
+ * Finds whether the type of a variable is float
+ *
+ * @param  {any}     param
+ * @return {Boolean}
+ */
 function is_float (param) {
 	return typeof param === 'number' && param.toString().indexOf('.') > -1;
 }
 
+/**
+ * Find whether the type of a variable is integer
+ *
+ * @param  {any}     param
+ * @return {Boolean}
+ */
 function is_int (param) {
 	return typeof param === 'number' && param.toString().indexOf('.') === -1;
 }
 
+/**
+ * Find whether the year is a leap year
+ *
+ * @param  {integer}  year Four digit year number
+ * @return {Boolean}
+ */
 function is_leap_year (year) {
+    if (gettype(year) !== 'integer') throw 'is_leap_year requires an integer';
 	return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
 
+/**
+ * inds whether a variable is NULL
+ *
+ * @param  {any}     param
+ * @return {Boolean}
+ */
 function is_null (param) {
 	return typeof param === 'object' && param === null;
+}
+
+/**
+ * Finds whether a variable is an object
+ *
+ * @param  {any}     param
+ * @return {Boolean}
+ */
+function is_object (param) {
+	return typeof param === 'object' && param.constructor === Object;
 }
 
 /**
