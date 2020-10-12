@@ -3,15 +3,17 @@ A JavaScript library that enables some PHP function for browsers.
 
 ##### date (_format_, _timestamp_)
 
-- {string} _format_ Support PHP date format
-- {number} _timestamp_ Uses current time if not given (optional)
+| Type | Parameters | Description | Optional  |
+| --- | --- | ------------- | ----- |
+| {string} | _format_ | Support PHP date format | |
+| {number} | _timestamp_ | Uses current time if not given | Yes |
 
-{string} Returns a formatted according to the given format
-    
+> **Returns** {string} a formatted according to the given format
+
 ##### day_of_year (_var_)
 
 - {date} _var_ A valid date object
-    
+
 {number} Returns the day of the year
 
 ##### empty (_var_)
