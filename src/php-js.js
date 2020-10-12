@@ -137,7 +137,7 @@ function empty (param) {
 /**
  * Get the type of a variable
  *
- * @param   {any} param
+ * @param   {any}    param
  * @returns {string}
  */
 function gettype (param) {
