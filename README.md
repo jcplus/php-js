@@ -8,7 +8,7 @@ A JavaScript library that enables some PHP function for browsers.
 | {string} | _format_ | Support PHP date format | |
 | {number} | _timestamp_ | Uses current time if not given | Yes |
 
-> **Returns** {string}
+> **Returns** {string}   
 > A formatted according to the given format
 
 ##### day_of_year (_var_)
@@ -17,7 +17,7 @@ A JavaScript library that enables some PHP function for browsers.
 | --- | --- | --- | --- |
 | {date} | _var_ | A valid date object | |
 
-> Returns {number}
+> Returns {number}   
 > The day of the year
 
 ##### empty (_var_)
