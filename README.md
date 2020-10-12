@@ -1,4 +1,4 @@
-# PHP-JS
+# PHP-AS-JS
 A JavaScript library that enables some PHP function for browsers.
 
 ### date
