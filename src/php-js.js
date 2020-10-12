@@ -561,6 +561,29 @@ function ucfirst (str) {
 }
 
 /**
+ * Generate a unique ID
+ *
+ * @param  {number} len The length of the unique ID string
+ * @return {string}
+ */
+function uniqid (len) {
+    if (typeof window.crypto.getRandomValues !== 'function') {
+        throw 'window.crypto.getRandomValues not supported by this browser';
+    }
+    if (isNaN(len) || len < 1) len = 13;
+    var payload = new Uint32Array(5), result = '';
+    window.crypto.getRandomValues(payload);
+    for (var i = 0; i < payload.length; i++) {
+        if (i === 0) {
+            result += payload[i].toString(16).charAt(0);
+        } else {
+            result += payload[i].toString(16).substr(0, 4);
+        }
+    }
+    return result;
+}
+
+/**
  * Get the week day name
  *
  * @param   {number}  n
