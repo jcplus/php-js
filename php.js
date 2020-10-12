@@ -114,6 +114,27 @@ function day_of_year (obj) {
 }
 
 /**
+ * Determine whether a variable is empty
+ *
+ * @param   {any}     param
+ * @returns {boolean}
+ */
+function empty (param) {
+	switch (gettype(param)) {
+		case 'array':
+			return !param.length;
+		case 'null':
+			return true;
+		case 'object':
+			return !Object.keys(param).length;
+		case 'string':
+			return !param.replace(/\s+/g, '').length;
+		default:
+			throw '"' + gettype(param) + '" is unsupported';
+	}
+}
+
+/**
  * Get DOM element
  *
  * @param   {string}  qs
@@ -137,27 +158,6 @@ function get_elements (qs) {
 		elements.push(each);
 	});
 	return elements.length ? elements : null;
-}
-
-/**
- * Determine whether a variable is empty
- *
- * @param   {any}     param
- * @returns {boolean}
- */
-function empty (param) {
-	switch (gettype(param)) {
-		case 'array':
-			return !param.length;
-		case 'null':
-			return true;
-		case 'object':
-			return !Object.keys(param).length;
-		case 'string':
-			return !param.replace(/\s+/g, '').length;
-		default:
-			throw '"' + gettype(param) + '" is unsupported';
-	}
 }
 
 /**
@@ -185,7 +185,7 @@ function gettype (param) {
 					if (
 						param.constructor.toString().indexOf('HTML') > -1
 						&& param.constructor.toString().indexOf('Element') > -1
-					) return 'html';
+					) return 'element';
 					return param.constructor.toString().toLowerCase();
 			}
         case 'string':

@@ -1,87 +1,149 @@
 # PHP-AS-JS
 A JavaScript library that enables some PHP function for browsers.
 
-### date
+##### date (_format_, _timestamp_)
 
-##### Parameters
+- {string} _format_ Support PHP date format
+- {number} _timestamp_ Uses current time if not given (optional)
 
-- {string} Support PHP date format
+{string} Returns a formatted according to the given format
     
-- {number} Timestamp integer uses current time if not given (optional)
+##### day_of_year (_var_)
 
-##### Returns
-
-{string} Formatted according to the given format
+- {date} _var_ A valid date object
     
-### day_of_year
+{number} Returns the day of the year
 
-##### Parameters
+##### empty (_var_)
 
-- {date} object
-    
-##### Returns
+- {any} _var_ The variable to check
 
-{number} The day of the year
+{boolean} Return _TRUE_ if empty, otherwise _FALSE_
 
-### empty
+##### get_element (_qs_)
 
-##### Parameters
+- {string} _qs_ Query selector
 
-- {any} variable to be checked
+{element|null} Returns the element if valid, otherwise _NULL_
 
-### gettype
+##### get_elements (_qs_)
 
-##### Parameters
+- {string} _qs_ Query selector
 
-- {any} variable to be checked
+{array|null} Returns an array of the elements if valid, otherwise _NULL_
 
-##### Returns
+##### gettype (_var_)
 
-{string} type of the given variable
+- {any} _var_ The variable to check
 
-### md5
+{string} Return the type of the given variable
 
-##### Credited
+##### md5 (_var_)
 
-[Paul Johnston](http://pajhome.org.uk/crypt/md5/md5.html)
+_Credited to [Paul Johnston](http://pajhome.org.uk/crypt/md5/md5.html)_
 
-##### Parameters
+- {any} _var_ The variable to hash
 
-- {any} variable to hash
+{string} Return an MD5 hashed string
 
-##### Returns
+##### in_array (_needle_, _haystack_, _strict_)
 
-{string} MD5 hashed string
+- {any} _needle_ The value to search
+- {array} _haystack_ The array to be searched
+- {boolean} _strict_ Determine to check types
 
-### in_array
+{boolean} Returns _TRUE_ for found in the given array, otherwise _FALSE_
 
-##### Parameters
+##### intval (_var_, _base_)
 
-- {any} the value to search
-- {array} the array to be searched
-- {boolean} TRUE to check if type matched
+- {any} _var_ The variable to convert
+- {number} _base_ Default is 10 for decimal output and 16 for hex output (optional)
 
-##### Returns
+{number} Returns a converted integer
 
-{boolean} TRUE for found in the given array, otherwise FALSE
+##### is_array (_var_)
 
-### intval
+- {any} _var_ The variable to check
 
-##### Parameters
+{boolean} Returns _TRUE_ if an array, otherwise _FALSE_
 
-- {any} variable to convert
-- {number} default is 10 for decimal and 16 for hex (optional)
+##### is_bool (_var_)
 
-##### Returns
+- {any} _var_ The variable to check
 
-{number} An integer
+{boolean} Returns _TRUE_ if a boolean, otherwise _FALSE_
 
-### is_array
+##### is_float (_var_)
 
-##### Parameters
+- {any} _var_ The variable to check
 
-- {any} variable to check
+{boolean} Returns _TRUE_ if a float, otherwise _FALSE_
 
-##### Returns
+##### is_int (_var_)
 
-{boolean} TRUE is an array, otherwise FALSE
+- {any} _var_ The variable to check
+
+{boolean} Returns _TRUE_ if an integer, otherwise _FALSE_
+
+##### is_leap_year (_var_)
+
+- {any} _var_ The year number to check
+
+{boolean} Returns _TRUE_ if a leap year, otherwise _FALSE_
+
+##### is_null (_var_)
+
+- {any} _var_ The variable to check
+
+{boolean} Returns _TRUE_ if _NULL_, otherwise _FALSE_
+
+##### is_object (_var_)
+
+- {any} _var_ The variable to check
+
+{boolean} Returns _TRUE_ if an object, otherwise _FALSE_
+
+##### is_string (_var_)
+
+- {any} _var_ The variable to check
+
+{boolean} Returns _TRUE_ if a string, otherwise _FALSE_
+
+##### month_name (_n_, _short_)
+
+- {number} _n_ The month number which is an integer between 0 and 11
+- {boolean} _short_ Determine if returns the first 3 letters or full names
+
+{string} Returns the name of the month
+
+##### sprintf (_format_, ...)
+
+- {string} _format_ Supports %s only at the moment
+- {string} ... variables to replace the format
+
+{string} Returns replaced string
+
+##### ucfirst (_str_)
+
+- {string} _str_ Source string
+
+{string} String with the first letter converted to uppercase
+
+##### uniqid (_len_)
+
+- {number} _len_ The length of the generated hex string
+
+{string} Return generated hex string
+
+##### week_name (_n_, _short_)
+
+- {number} _n_ Week number between 0 and 6
+- {boolean} _short_ Determine if return the first 3 letters or full names
+
+{string} Return the name of the week
+
+##### week_number (_obj_)
+
+- {date} _obj_ Date object
+
+{number} Returns the week number in the year
