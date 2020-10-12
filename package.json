@@ -1,0 +1,23 @@
+{
+  "name": "php-js",
+  "version": "0.0.1",
+  "description": "A JS library that brings common PHP function to JS",
+  "main": "php.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcplus/php-js.git"
+  },
+  "keywords": [
+    "php",
+    "js"
+  ],
+  "author": "JC+",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jcplus/php-js/issues"
+  },
+  "homepage": "https://github.com/jcplus/php-js#readme"
+}
