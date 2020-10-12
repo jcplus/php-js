@@ -1,6 +1,16 @@
 # PHP-AS-JS
 A JavaScript library that enables some PHP function for browsers.
 
+##### add_class (_element_, _..._)
+
+| Type | Parameters | Description | Optional |
+| --- | --- | --- | --- |
+| {element} | _element_ | HTML element to add class on | |
+| {array|string} | _..._ | Array or string of the class | |
+
+> **Returns** {element}   
+> The element with class added
+
 ##### date (_format_, _timestamp_)
 
 | Type | Parameters | Description | Optional |

@@ -5,27 +5,24 @@
  * @param {array|string} ...
  */
 function add_class () {
-    var element = false, payload = [];
+    var element = false, class_arr = [];
     for (var i = 0; i < arguments.length; i ++) {
         if (i === 0) {
             element = arguments[0];
             if (gettype(element) !== 'element') throw 'add_class requires the first parameter to be an HTML element';
         } else {
             if (gettype(arguments[i]) === 'string') {
-                arguments[i].split(/\s+/g).forEach(function (each) {
-                    if (each !== '' && payload.indexOf(each) === -1) payload.push(each);
-                });
+                class_arr = class_arr.concat(arguments[i].split(/\s+/g));
             } else if (gettype(arguments[i]) === 'array') {
                 arguments[i].forEach(function (each) {
-                    if (each !== '' && payload.indexOf(each) === -1) payload.push(each);
+                    if (gettype(each) === 'string') class_arr = class_arr.concat(each.split(/\s+/g));
+                    if (gettype(each) === 'array') class_arr = class_arr.concat(each);
                 });
-            } else {
-                throw 'Type "' + gettype(arguments[i]) + '" is not supported'
             }
         }
     }
-    if (element && payload.length) {
-        payload.forEach(function (each) {
+    if (element && class_arr.length) {
+        class_arr.forEach(function (each) {
             element.classList.add(each);
         });
     }
@@ -170,12 +167,19 @@ function empty (param) {
 /**
  * Get DOM element
  *
- * @param   {string}  qs
- * @returns {Element}
+ * @param   {string}       qs Query selector of the element
+ * @returns {element|null}
  */
 function get_element (qs) {
 	if (gettype(qs) !== 'string' || empty(qs)) throw 'get_element requires a string parameter';
-	return document.querySelector(qs.trim());
+    var element = document.querySelector(qs.trim());
+    if (!element) return null;
+    element.addClass = function () {
+        var args = Array.prototype.slice.call(arguments);
+        add_class(this, args);
+        return this;
+    };
+	return element;
 }
 
 /**
@@ -190,7 +194,6 @@ function get_elements (qs) {
 	Array.prototype.forEach.call(document.querySelectorAll(qs.trim()), function (each) {
 		elements.push(each);
 	});
-
     if (!elements.length) return null;
 
     /**
