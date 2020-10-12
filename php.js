@@ -1,4 +1,37 @@
 /**
+ * Add class to given element
+ *
+ * @param {element}      element
+ * @param {array|string} ...
+ */
+function add_class () {
+    var element = false, payload = [];
+    for (var i = 0; i < arguments.length; i ++) {
+        if (i === 0) {
+            element = arguments[0];
+            if (gettype(element) !== 'element') throw 'add_class requires the first parameter to be an HTML element';
+        } else {
+            if (gettype(arguments[i]) === 'string') {
+                arguments[i].split(/\s+/g).forEach(function (each) {
+                    if (each !== '' && payload.indexOf(each) === -1) payload.push(each);
+                });
+            } else if (gettype(arguments[i]) === 'array') {
+                arguments[i].forEach(function (each) {
+                    if (each !== '' && payload.indexOf(each) === -1) payload.push(each);
+                });
+            } else {
+                throw 'Type "' + gettype(arguments[i]) + '" is not supported'
+            }
+        }
+    }
+    if (element && payload.length) {
+        payload.forEach(function (each) {
+            element.classList.add(each);
+        });
+    }
+}
+
+/**
  * Returns a string formatted according to the given format string using
  * the given integer timestamp or the current time if no timestamp is given.
  *
@@ -154,10 +187,26 @@ function get_element (qs) {
 function get_elements (qs) {
 	if (gettype(qs) !== 'string' || empty(qs)) throw 'get_elements requires a string parameter';
 	var elements = [];
-	Array.prototype.forEach.call(document.querySelector(qs.trim()), function (each) {
+	Array.prototype.forEach.call(document.querySelectorAll(qs.trim()), function (each) {
 		elements.push(each);
 	});
-	return elements.length ? elements : null;
+
+    if (!elements.length) return null;
+
+    /**
+     * Add class to elements
+     *
+     * @param  {array|string} ... Array or string of class
+     * @return {array}            Array of elements after with class added
+     */
+    elements.addClass = function () {
+        var args = Array.prototype.slice.call(arguments);
+        this.forEach(function (each) {
+            add_class(each, args);
+        });
+        return this;
+    };
+	return elements;
 }
 
 /**
@@ -189,7 +238,8 @@ function gettype (param) {
 					return param.constructor.toString().toLowerCase();
 			}
         case 'string':
-            if (param.toString() === param.toString(16)) return 'hex';
+            if (/0x[0-9a-f]+/gi.test(param)) return 'hex';
+            return 'string';
 		default:
 			return typeof param;
 	}
