@@ -553,7 +553,7 @@ function month_name (n, short) {
 	if (gettype(n) !== 'integer' || n > 11 || n < 0) throw 'Invalid month number';
 	var names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
 			'September', 'October', 'November', 'December'];
-	return short ? names[n].substr(0, 3) : names[n];
+	return gettype(short) === 'boolean' && short === true ? names[n].substr(0, 3) : names[n];
 }
 
 /**
@@ -619,7 +619,7 @@ function uniqid (len) {
 function week_name (n, short) {
 	if (gettype(n) !== 'integer' || n > 6 || n < 0) throw 'Invalid week number';
 	var names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-	return short ? names[n].substr(0, 3) : names[n];
+	return gettype(short) === 'boolean' && short === true  ? names[n].substr(0, 3) : names[n];
 }
 
 /**

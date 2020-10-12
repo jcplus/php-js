@@ -59,7 +59,7 @@ _Credited to [Paul Johnston](http://pajhome.org.uk/crypt/md5/md5.html)_
 - {any} _var_ The variable to convert
 - {number} _base_ Default is 10 for decimal output and 16 for hex output (optional)
 
-{number} Returns a converted integer
+{number|string} Returns a converted decimal integer, or a hex string
 
 ##### is_array (_var_)
 
