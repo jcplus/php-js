@@ -2,7 +2,7 @@
  * Returns a string formatted according to the given format string using
  * the given integer timestamp or the current time if no timestamp is given.
  *
- * @param   {string}  format
+ * @param   {string} format
  * @param   {number} timestamp
  * @returns {string}
  */
