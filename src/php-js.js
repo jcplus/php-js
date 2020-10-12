@@ -1,34 +1,4 @@
 /**
- * Return all the keys or a subset of the keys of an object
- *
- * @param  {object} obj
- * @return {array}
- */
-function json_keys (obj) {
-    if (gettype(obj) !== 'object') throw 'json_keys requires an object';
-    var keys = [];
-    for (var key in obj) {
-        keys.push(key);
-    }
-    return keys;
-}
-
-/**
- * Return all the values of an array
- *
- * @param  {object} obj
- * @return {array}
- */
-function json_values (obj) {
-    if (gettype(obj) !== 'object') throw 'json_values requires an object';
-    var values = [];
-    for (var key in obj) {
-        values.push(obj[key]);
-    }
-    return values;
-}
-
-/**
  * Returns a string formatted according to the given format string using
  * the given integer timestamp or the current time if no timestamp is given.
  *
@@ -192,6 +162,8 @@ function gettype (param) {
 					) return 'html';
 					return param.constructor.toString().toLowerCase();
 			}
+        case 'string':
+            if (param.toString() === param.toString(16)) return 'hex';
 		default:
 			return typeof param;
 	}
@@ -199,7 +171,7 @@ function gettype (param) {
 
 /**
  * Hash a string using MD5
- * 
+ *
  * @credit http://pajhome.org.uk/crypt/md5/md5.html
  * @param  {string} str
  * @return {string}
@@ -432,6 +404,38 @@ function in_array (needle, haystack, strict) {
 }
 
 /**
+ * Get the integer value of a variable
+ *
+ * @param  {any}           param
+ * @param  {number}        base  10 for decimal; 16 for hex, if param is a string starts with "0x", base is 16
+ * @return {number|string}       Return a hex string if base is set to 16
+ */
+function intval (param, base) {
+    switch (gettype(param)) {
+        case 'boolean':
+            param = param === true ? 1 : 0;
+            break;
+        case 'array':
+            param = param.length ? 1 : 0;
+            break;
+        case 'object':
+            param = Object.keys(param).length ? 1 : 0;
+            break;
+        case 'float':
+        case 'integer':
+            param = parseInt(param);
+            break;
+        case 'string':
+            param = !isNaN(parseInt(param)) ? parseInt(param) : 0;
+            break;
+        default:
+            param = 0;
+            break;
+    }
+    return typeof base === 'undefined' || base !== 16 ? param : param.toString(16);
+}
+
+/**
  * Finds whether a variable is an array
  *
  * @param   {any}     param
@@ -544,6 +548,16 @@ function sprintf () {
         return typeof args[i] !== 'undefined' ? args[i] : match;
     });
 	return format;
+}
+
+/**
+ * Make a string's first character uppercase
+ *
+ * @param  {string} str
+ * @return {string}
+ */
+function ucfirst (str) {
+    return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
 }
 
 /**
