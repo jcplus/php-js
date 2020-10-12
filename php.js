@@ -114,6 +114,32 @@ function day_of_year (obj) {
 }
 
 /**
+ * Get DOM element
+ *
+ * @param   {string}  qs
+ * @returns {Element}
+ */
+function get_element (qs) {
+	if (gettype(qs) !== 'string' || empty(qs)) throw 'get_element requires a string parameter';
+	return document.querySelector(qs.trim());
+}
+
+/**
+ * Get an array of DOM elements
+ *
+ * @param   {string}     qs
+ * @returns {array|null}
+ */
+function get_elements (qs) {
+	if (gettype(qs) !== 'string' || empty(qs)) throw 'get_elements requires a string parameter';
+	var elements = [];
+	Array.prototype.forEach.call(document.querySelector(qs.trim()), function (each) {
+		elements.push(each);
+	});
+	return elements.length ? elements : null;
+}
+
+/**
  * Determine whether a variable is empty
  *
  * @param   {any}     param
